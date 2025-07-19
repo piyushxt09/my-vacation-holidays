@@ -1,103 +1,96 @@
-import Image from "next/image";
+
+import Header from './home/header';
+import WhyChooseUs from './home/whyChooseUs';
+import Discount from './home/discount';
+import International from './home/international';
+import Domestic from './home/domestic';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import ThemeDestinations from './home/themeDestination';
+import WeekendTrips from './home/weekandTrips';
+import PromoBanner from './home/banner';
+import TestimonialSlider from './home/testimonials';
+import Footer from './home/footer';
+import './globals.css'
+
+import {
+  faMapMarkerAlt,
+  faCalendarAlt,
+  faGlobe,
+  faArrowRight,
+
+} from '@fortawesome/free-solid-svg-icons';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+  return (
+    <>
+      <div className="relative min-h-screen bg-[url('/bg.png')] bg-cover bg-center text-white">
+        <div className="absolute inset-0  z-0"></div>
+
+        <Header />
+
+        <section className="relative  flex justify-center md:mt-20 mt-5 px-4 ">
+          <div className="bg-white justify-around md:rounded-full rounded shadow-lg p-4 flex flex-col md:flex-row md:items-center items-start space-y-4 md:space-y-0 md:space-x-6 w-full max-w-4xl text-black">
+            {/* Where */}
+            <div className="flex items-center space-x-2 w-full md:w-auto">
+              <FontAwesomeIcon icon={faMapMarkerAlt} className="text-primary border rounded p-3" />
+              <div>
+                <p className="text-xs font-medium text-gray-400">Where</p>
+                <input type="text" placeholder="Search destinations" className="text-sm outline-none w-full md:w-auto" />
+              </div>
+            </div>
+
+            {/* When */}
+            <div className="flex items-center space-x-2 w-full md:w-auto">
+              <FontAwesomeIcon icon={faCalendarAlt} className="text-primary border rounded p-3" />
+              <div>
+                <p className="text-xs font-medium text-gray-400">When</p>
+                <p className="text-sm">Feb 05 - March 14</p>
+              </div>
+            </div>
+
+            {/* Tour Type */}
+            <div className="flex items-center space-x-2 w-full md:w-auto">
+              <FontAwesomeIcon icon={faGlobe} className="text-primary border rounded p-3" />
+              <div>
+                <p className="text-xs font-medium text-gray-400">Tour Type</p>
+                <p className="text-sm">All tours</p>
+              </div>
+            </div>
+
+            {/* Submit */}
+            <button className="bg-primary hover:bg-blue-700 text-white p-3 cursor-pointer rounded-full md:w-25 w-80">
+              <FontAwesomeIcon icon={faArrowRight} />
+            </button>
+          </div>
+        </section>
+        <section className="relative  text-center mt-12 px-6">
+          <h1 className="text-3xl md:text-5xl font-bold drop-shadow-md">Find Next Place To Visit</h1>
+          <p className="mt-4 text-sm md:text-base text-white/80">
+            Discover amazing places at exclusive deals. Eat, Shop, Visit <br className="hidden md:block" />
+            interesting places around the world.
+          </p>
+        </section>
+      </div>
+
+      < WhyChooseUs />
+
+      <Discount />
+
+      < Domestic />
+
+      <International />
+
+      <ThemeDestinations />
+
+      <WeekendTrips />
+
+      <PromoBanner />
+
+      <TestimonialSlider />
+
+      <Footer />
+
+    </>
   );
 }
