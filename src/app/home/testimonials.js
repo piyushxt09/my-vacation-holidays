@@ -19,7 +19,7 @@ export default function TestimonialSlider() {
   return (
     <section className="pb-12 bg-white">
       <div className=" m-auto px-4 xl:max-w-[1300px] md:max-w-[1100px]">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-8 text-center">
+        <h2 className="text-2xl md:text-3xl font-medium text-gray-800 mb-8 text-center">
           Client's Testimonials
         </h2>
 

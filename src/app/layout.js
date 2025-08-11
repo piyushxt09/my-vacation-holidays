@@ -1,6 +1,7 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import './globals.css';
+import { Geist, Geist_Mono } from 'next/font/google';
 import { Poppins } from 'next/font/google';
-import "./globals.css";
+import ClientLayout from './ClientLayout'; // new client wrapper
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +28,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={poppins.className}>
-        {children}
+        <ClientLayout>{children}</ClientLayout>
       </body>
     </html>
   );

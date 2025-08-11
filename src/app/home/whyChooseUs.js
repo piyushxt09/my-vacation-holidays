@@ -6,7 +6,7 @@ import {
     faTicket,
     faGem,
     faAward,
-     faGlobe,
+    faGlobe,
 } from '@fortawesome/free-solid-svg-icons';
 
 
@@ -42,10 +42,10 @@ export default function whyChooseUs() {
 
     return (
         <>
-        
+
             <section className="py-16 bg-white text-start max-w-7xl m-auto">
 
-                <h2 className="text-3xl font-bold text-gray-900 mb-10 ps-20">Why choose Us</h2>
+                <h2 className="text-3xl font-medium text-gray-900 mb-10 ps-20">Why choose Us</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 px-4 md:px-20">
                     {features.map((item, index) => (
                         <div key={index} className="flex flex-col items-start text-start space-y-4 shadow p-5">

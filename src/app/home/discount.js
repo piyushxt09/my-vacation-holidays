@@ -39,7 +39,7 @@ export default function Discount() {
             <div className='m-auto px-4 xl:max-w-[1300px] md:max-w-[1100px]'>
 
 
-                <h2 className="text-3xl font-bold text-gray-800 mb-6  md:text-start md:ms-0 ">
+                <h2 className="text-3xl font-medium text-gray-800 mb-6  md:text-start md:ms-0 ">
                     Special Offers
                 </h2>
 
@@ -75,7 +75,7 @@ export default function Discount() {
                                     {/* Text Overlay */}
                                     <div className="absolute inset-0 bg-black/20 flex flex-col justify-center p-4 text-white">
                                         <p className="text-sm font-semibold text-orange-300">{offer.title}</p>
-                                        <h3 className="text-lg font-bold">{offer.highlight}</h3>
+                                        <h3 className="text-lg font-medium">{offer.highlight}</h3>
                                         {offer.subtitle && (
                                             <p className="mt-1 text-xs text-gray-200">{offer.subtitle}</p>
                                         )}
