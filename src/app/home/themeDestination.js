@@ -40,11 +40,17 @@ export default function ThemeDestinations() {
                             }
                         >
                             <Image
-                                src={`/galleryimg/${theme.image || 'default-tour.jpg'}`}
+                                src={
+                                    theme.image?.startsWith('http')
+                                        ? theme.image
+                                        : `/galleryimg/${theme.image || 'default-tour.jpg'}`
+                                }
                                 alt={theme.theme_name}
                                 fill
                                 className="object-cover"
                             />
+
+
                             <div className="absolute inset-0 bg-black/30 flex items-end p-4">
                                 <h3 className="text-white text-sm sm:text-base font-medium">
                                     {theme.theme_name}

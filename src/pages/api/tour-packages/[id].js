@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { IncomingForm } from 'formidable';
+import cloudinary from 'cloudinary';
 import { getDBConnection } from '../db';
 
 export const config = {
@@ -8,6 +9,13 @@ export const config = {
         bodyParser: false,
     },
 };
+
+// Cloudinary config
+cloudinary.v2.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const slugify = (text) =>
     text
@@ -22,8 +30,11 @@ export default async function handler(req, res) {
 
     if (req.method === 'PUT') {
         try {
+            const uploadDir = path.join('/tmp', 'galleryimg');
+            fs.mkdirSync(uploadDir, { recursive: true });
+
             const form = new IncomingForm({
-                uploadDir: path.join(process.cwd(), 'public/galleryimg'),
+                uploadDir,
                 keepExtensions: true,
                 multiples: false,
             });
@@ -44,21 +55,22 @@ export default async function handler(req, res) {
                     indian,
                     international,
                     fixed_departure,
-                   
                     itinerary = '[]',
                 } = fields;
 
                 const url = slugify(package_name);
                 const connection = await getDBConnection();
 
-                let imageFilename = null;
+                let imageUrl = null;
                 if (files.image && files.image.size > 0) {
-                    const file = files.image;
-                    const ext = path.extname(file.originalFilename || file.newFilename);
-                    const newFilename = `tour_${Date.now()}${ext}`;
-                    const destPath = path.join(form.uploadDir, newFilename);
-                    await fs.promises.rename(file.filepath, destPath);
-                    imageFilename = newFilename;
+                    // Upload to Cloudinary directly from /tmp
+                    const uploadResult = await cloudinary.v2.uploader.upload(files.image.filepath, {
+                        folder: 'tour_packages',
+                        public_id: `tour_${Date.now()}`,
+                        resource_type: 'image',
+                    });
+
+                    imageUrl = uploadResult.secure_url;
                 }
 
                 const updateFields = {
@@ -72,11 +84,10 @@ export default async function handler(req, res) {
                     indian,
                     international,
                     fixed_departure,
-                   
                 };
 
-                if (imageFilename) {
-                    updateFields.image = imageFilename;
+                if (imageUrl) {
+                    updateFields.image = imageUrl;
                 }
 
                 const updateSet = Object.keys(updateFields)
@@ -90,7 +101,7 @@ export default async function handler(req, res) {
                     updateValues
                 );
 
-                // Delete existing itinerary entries
+                // Delete old itinerary
                 await connection.execute(
                     'DELETE FROM tour_itinerary WHERE tour_package_url = ?',
                     [url]
@@ -102,7 +113,7 @@ export default async function handler(req, res) {
                     const { day_number, title, description } = day;
                     await connection.execute(
                         `INSERT INTO tour_itinerary (tour_package_url, day_number, title, description)
-                     VALUES (?, ?, ?, ?)`,
+                         VALUES (?, ?, ?, ?)`,
                         [url, day_number, title, description]
                     );
                 }
@@ -113,53 +124,7 @@ export default async function handler(req, res) {
             console.error('Error updating tour:', error);
             return res.status(500).json({ error: 'Internal Server Error' });
         }
-    }
-
-    // GET and DELETE remain unchanged...
-    else if (req.method === 'GET') {
-        try {
-            const connection = await getDBConnection();
-
-            // Get the tour by ID
-            const [tourRows] = await connection.execute(
-                'SELECT * FROM tour_packages WHERE id = ?',
-                [id]
-            );
-
-            if (tourRows.length === 0) {
-                return res.status(404).json({ error: 'Tour not found' });
-            }
-
-            const tour = tourRows[0];
-
-            // Fetch related itinerary based on package URL
-            const [itineraryRows] = await connection.execute(
-                'SELECT day_number, title, description FROM tour_itinerary WHERE tour_package_url = ? ORDER BY day_number ASC',
-                [tour.url]
-            );
-
-            return res.status(200).json({
-                tour,
-                itinerary: itineraryRows,
-            });
-        } catch (error) {
-            console.error('Error fetching tour:', error);
-            return res.status(500).json({ error: 'Internal Server Error' });
-        }
-    }
-
-    else if (req.method === 'DELETE') {
-        try {
-            const connection = await getDBConnection();
-            await connection.execute('DELETE FROM tour_packages WHERE id = ?', [id]);
-            return res.status(200).json({ message: 'Deleted successfully' });
-        } catch (error) {
-            console.error('Error deleting tour:', error);
-            return res.status(500).json({ error: 'Internal Server Error' });
-        }
-    }
-
-    else {
+    } else {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 }

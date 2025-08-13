@@ -18,17 +18,21 @@ export default function WeekendTrips({ similarTourss }) {
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 xl:grid-cols-4 gap-6">
                         {similarTourss.map((tour, index) => (
-                            <Link 
-                                key={index} 
-                                href={`/tour/${tour.url}`} 
+                            <Link
+                                key={index}
+                                href={`/tour/${tour.url}`}
                                 className="rounded-xl overflow-hidden shadow-md relative block group"
                             >
                                 <Image
-                                    src={`/galleryimg/${tour.image || 'default-tour.jpg'}`}
+                                    src={
+                                        tour.image?.startsWith('http')
+                                            ? tour.image
+                                            : `/galleryimg/${tour.image || 'default-tour.jpg'}`
+                                    }
                                     alt={tour.package_name}
                                     width={400}
                                     height={300}
-                                    className="w-full h-[400px] md:h-[300px] xl:h-[400px] object-cover transition-transform duration-300 group-hover:scale-105"
+                                    className="w-full h-[400px] md:h-[300px] xl:h-[400px] object-cover group-hover:scale-105 transition-transform duration-300"
                                 />
 
                                 {/* Overlay */}

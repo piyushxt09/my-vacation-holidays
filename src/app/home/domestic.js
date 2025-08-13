@@ -56,12 +56,17 @@ export default function Domestic() {
                             <Link href={`/tour/${tour.url}`}>
                                 <div className="relative rounded-xl overflow-hidden shadow-md group">
                                     <Image
-                                        src={`/galleryimg/${tour.image}`}
+                                        src={
+                                            tour.image?.startsWith('http')
+                                                ? tour.image
+                                                : `/galleryimg/${tour.image}`
+                                        }
                                         alt={tour.package_name}
                                         width={300}
                                         height={200}
                                         className="w-full h-[220px] md:h-[180px] xl:h-[220px] object-cover group-hover:scale-105 transition-transform duration-300"
                                     />
+
                                     <div className="absolute inset-0 bg-black/40 text-white flex flex-col justify-end p-4">
                                         <p className="text-xs text-gray-200">
                                             {tour.tour_destination?.split(' ').slice(0, 3).join(' ')}

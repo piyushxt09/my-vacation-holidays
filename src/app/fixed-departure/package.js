@@ -35,11 +35,16 @@ export default function PackageCard() {
                         {/* Image */}
                         <div className="w-full md:w-60 h-48 md:h-auto relative rounded-lg overflow-hidden">
                             <Image
-                                src={`/galleryimg/${pkg.image}`}
+                                src={
+                                    pkg.image?.startsWith('http')
+                                        ? pkg.image
+                                        : `/galleryimg/${pkg.image}`
+                                }
                                 alt={pkg.name}
                                 fill
                                 className="object-cover"
                             />
+
                         </div>
 
                         {/* Content */}

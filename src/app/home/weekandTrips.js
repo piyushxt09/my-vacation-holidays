@@ -51,12 +51,17 @@ export default function WeekendTrips() {
                                 className="rounded-xl overflow-hidden shadow-md relative block group"
                             >
                                 <Image
-                                    src={`/galleryimg/${trip.image || 'default-tour.jpg'}`}
+                                    src={
+                                        trip.image?.startsWith('http')
+                                            ? trip.image
+                                            : `/galleryimg/${trip.image || 'default-tour.jpg'}`
+                                    }
                                     alt={trip.package_name}
                                     width={400}
                                     height={300}
                                     className="w-full h-[400px] md:h-[300px] xl:h-[400px] object-cover group-hover:scale-105 transition-transform duration-300"
                                 />
+
 
                                 {/* Overlay */}
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent flex flex-col justify-end p-4">

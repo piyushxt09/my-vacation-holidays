@@ -10,12 +10,17 @@ export default function ImageGallery({ tour }) {
             <a href={`/galleryimg/${tour.image}`} target="_blank" rel="noopener noreferrer">
                 <div className="relative h-[500px] w-full overflow-hidden rounded-lg transition-transform duration-300">
                     <Image
-                        src={`/galleryimg/${tour.image}`}
+                        src={
+                            tour.image?.startsWith('http')
+                                ? tour.image
+                                : `/galleryimg/${tour.image || 'default-tour.jpg'}`
+                        }
                         alt={tour.package_name}
                         fill
                         className="object-cover"
                         priority
                     />
+
                 </div>
             </a>
 

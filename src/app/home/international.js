@@ -56,7 +56,11 @@ export default function International() {
                             <Link href={`/tour/${tour.url}`}>
                                 <div className="relative rounded-xl overflow-hidden shadow-md group">
                                     <Image
-                                        src={`/galleryimg/${tour.image}`}
+                                        src={
+                                            tour.image?.startsWith('http')
+                                                ? tour.image
+                                                : `/galleryimg/${tour.image}`
+                                        }
                                         alt={tour.package_name}
                                         width={300}
                                         height={200}

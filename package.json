@@ -17,6 +17,7 @@
     "@tiptap/extension-placeholder": "^3.0.7",
     "@tiptap/react": "^3.0.7",
     "@tiptap/starter-kit": "^3.0.7",
+    "cloudinary": "^2.7.0",
     "cookie": "^1.0.2",
     "date-fns": "^4.1.0",
     "formidable": "^2.1.5",

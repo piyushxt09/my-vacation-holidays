@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { IncomingForm } from 'formidable';
+import cloudinary from 'cloudinary';
 import { getDBConnection } from './db';
 
 export const config = {
@@ -8,6 +9,13 @@ export const config = {
         bodyParser: false,
     },
 };
+
+// Cloudinary config
+cloudinary.v2.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const slugify = (text) =>
     text
@@ -23,8 +31,12 @@ export default async function handler(req, res) {
     }
 
     try {
+        // Use /tmp instead of public (Vercel writable dir)
+        const uploadDir = path.join('/tmp', 'galleryimg');
+        fs.mkdirSync(uploadDir, { recursive: true });
+
         const form = new IncomingForm({
-            uploadDir: path.join(process.cwd(), 'public/galleryimg'),
+            uploadDir,
             keepExtensions: true,
             multiples: false,
         });
@@ -52,14 +64,16 @@ export default async function handler(req, res) {
             const url = slugify(package_name);
             const connection = await getDBConnection();
 
-            let imageFilename = null;
+            let imageUrl = null;
             if (files.image && files.image.size > 0) {
-                const file = files.image;
-                const ext = path.extname(file.originalFilename || file.newFilename);
-                const newFilename = `tour_${Date.now()}${ext}`;
-                const destPath = path.join(form.uploadDir, newFilename);
-                await fs.promises.rename(file.filepath, destPath);
-                imageFilename = newFilename;
+                // Upload to Cloudinary directly from /tmp
+                const uploadResult = await cloudinary.v2.uploader.upload(files.image.filepath, {
+                    folder: 'tour_packages',
+                    public_id: `tour_${Date.now()}`,
+                    resource_type: 'image',
+                });
+
+                imageUrl = uploadResult.secure_url;
             }
 
             // 1. Insert into `tour_packages`
@@ -84,12 +98,12 @@ export default async function handler(req, res) {
                 indian,
                 international,
                 fixed_departure,
-                imageFilename,
+                imageUrl, // Store Cloudinary URL
             ];
 
             await connection.execute(sql, values);
 
-            const itineraryData = JSON.parse(itinerary); 
+            const itineraryData = JSON.parse(itinerary);
             const itinerarySql = `
                 INSERT INTO tour_itinerary (tour_package_url, day_number, title, description)
                 VALUES (?, ?, ?, ?)
