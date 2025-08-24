@@ -14,7 +14,7 @@ export default function Domestic() {
     useEffect(() => {
         const fetchTours = async () => {
             try {
-                const res = await fetch('http://localhost:5000/api/domestic-packages');
+                const res = await fetch('https://my-vacation-backend.onrender.com/api/domestic-packages');
 ;
                 const data = await res.json();
                 setTours(data);
