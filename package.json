@@ -23,6 +23,8 @@
     "formidable": "^2.1.5",
     "framer-motion": "^12.23.2",
     "fs": "^0.0.1-security",
+    "jose": "^6.0.13",
+    "jsonwebtoken": "^9.0.2",
     "lexical": "^0.33.1",
     "mysql2": "^3.14.2",
     "next": "15.3.4",

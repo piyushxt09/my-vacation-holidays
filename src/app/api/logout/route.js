@@ -1,17 +1,10 @@
 import { NextResponse } from 'next/server';
-import { serialize } from 'cookie';
 
-export async function GET() {
-    const response = NextResponse.json({ message: 'Logged out' });
+export async function GET(request) {
+  const response = NextResponse.redirect(new URL('/login', request.url));
 
-    response.headers.set(
-        'Set-Cookie',
-        serialize('session_token', '', {
-            httpOnly: true,
-            path: '/',
-            maxAge: 0, // delete cookie
-        })
-    );
+  // Delete the token cookie (same name as set in login)
+  response.cookies.delete('token', { path: '/' });
 
-    return response;
+  return response;
 }

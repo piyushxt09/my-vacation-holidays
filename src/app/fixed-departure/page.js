@@ -8,7 +8,7 @@ import "../globals.css";
 
 
 export const metadata = {
-    title: 'International Tour',
+    title: 'Fixed Tour',
     description: 'Learn more about our team and vision.',
 };
 

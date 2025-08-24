@@ -23,7 +23,6 @@ export default function ImageGallery({ tour }) {
 
                 </div>
             </a>
-
         </div>
     );
 

@@ -12,19 +12,21 @@ export default function LoginPage() {
     async function handleLogin(e) {
         e.preventDefault();
 
-        const res = await fetch('/api/login', {
-            method: 'POST',
+        const res = await fetch("http://localhost:5000/api/login", {
+            method: "POST",
             body: JSON.stringify({ username, password }),
             headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
             },
+            credentials: "include", // 👈 super important for cookies
         });
 
         if (res.ok) {
-            router.push('/admin');
+            router.push("/admin"); // ✅ redirect works after cookie is set
         } else {
-            alert('Login failed');
+            alert("Login failed");
         }
+
     }
 
     return (

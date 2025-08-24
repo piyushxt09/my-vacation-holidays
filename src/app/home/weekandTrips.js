@@ -11,7 +11,7 @@ export default function WeekendTrips() {
     useEffect(() => {
         async function fetchTrips() {
             try {
-                const res = await fetch('/api/similar-tours');
+                const res = await fetch('http://localhost:5000/api/similar-tours');
                 if (!res.ok) throw new Error('Failed to fetch trips');
                 const data = await res.json();
                 setTrips(data);
