@@ -9,7 +9,7 @@ import "../../globals.css";
 
 export async function generateMetadata({ params }) {
     const { url } = await params;
-    const res = await fetch(`http://localhost:5000/api/tour/${url}`);
+    const res = await fetch(`https://my-vacation-backend.onrender.com/api/tour/${url}`);
     if (!res.ok) {
         return { title: "Tour Not Found", description: "This tour could not be found." };
     }
@@ -25,12 +25,12 @@ export default async function Page({ params }) {
     const { url } = await params;
 
     // Fetch tour (with itinerary inside)
-    const tourRes = await fetch(`http://localhost:5000/api/tour/${url}`, { cache: "no-store" });
+    const tourRes = await fetch(`https://my-vacation-backend.onrender.com/api/tour/${url}`, { cache: "no-store" });
     if (!tourRes.ok) return <div>Tour not found</div>;
     const tour = await tourRes.json();
 
     // Fetch similar tours
-    const similarRes = await fetch(`http://localhost:5000/api/tour/${url}/similar`, { cache: "no-store" });
+    const similarRes = await fetch(`https://my-vacation-backend.onrender.com/api/tour/${url}/similar`, { cache: "no-store" });
     const similarTours = await similarRes.json();
 
     return (

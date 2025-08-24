@@ -14,7 +14,7 @@ export default function International() {
     useEffect(() => {
         const fetchPackages = async () => {
             try {
-                const res = await fetch("http://localhost:5000/api/international-packages");
+                const res = await fetch("https://my-vacation-backend.onrender.com/api/international-packages");
                 const data = await res.json();
                 setDestinations(data);
             } catch (error) {

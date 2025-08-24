@@ -14,7 +14,7 @@ export default function PackageCard() {
     useEffect(() => {
         async function fetchPackages() {
             try {
-                const res = await fetch('http://localhost:5000/api/fixed-tours');
+                const res = await fetch('https://my-vacation-backend.onrender.com/api/fixed-tours');
                 const data = await res.json();
                 setPackages(data);
             } catch (error) {

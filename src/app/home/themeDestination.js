@@ -10,7 +10,7 @@ export default function ThemeDestinations() {
     useEffect(() => {
         async function fetchThemes() {
             try {
-                const res = await fetch('http://localhost:5000/api/theme-destinations');
+                const res = await fetch('https://my-vacation-backend.onrender.com/api/theme-destinations');
                 if (!res.ok) throw new Error('Failed to fetch themes');
                 const data = await res.json();
                 setThemes(data);
