@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import { getDBConnection } from '../../../pages/api/db'; // update the path if needed
 import { serialize } from 'cookie';
 
 export async function POST(req) {
