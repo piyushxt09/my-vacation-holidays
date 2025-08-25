@@ -1,17 +1,15 @@
-'use client'; 
+import { NextResponse } from "next/server";
 
-import { useEffect } from "react";
-import { useRouter } from "next/router";
+export function middleware(request) {
+  const token = request.cookies.get("token")?.value;
 
-export default function AdminPage() {
-  const router = useRouter();
+  if (!token) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
 
-  useEffect(() => {
-    const token = sessionStorage.getItem("token");
-    if (!token) {
-      router.replace("/login"); // Redirect if no token
-    }
-  }, [router]);
-
-  return <div>Welcome to Admin Dashboard</div>;
+  return NextResponse.next();
 }
+
+export const config = {
+  matcher: ["/admin/:path*"], // protect admin routes
+};
