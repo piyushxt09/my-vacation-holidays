@@ -18,15 +18,14 @@ export default function LoginPage() {
             headers: {
                 "Content-Type": "application/json",
             },
-            credentials: "include", // 👈 super important for cookies
+            credentials: "include", 
         });
 
         if (res.ok) {
-            router.push("/admin"); // ✅ redirect works after cookie is set
+            router.push("/admin"); 
         } else {
             alert("Login failed");
         }
-
     }
 
     return (

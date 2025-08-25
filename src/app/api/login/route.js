@@ -1,38 +1,30 @@
-import { NextResponse } from 'next/server';
-import { serialize } from 'cookie';
+import { NextResponse } from "next/server";
 
 export async function POST(req) {
+  try {
     const body = await req.json();
-    const { username, password } = body;
 
-    try {
-        const db = await getDBConnection();
+    // Forward login request to Express backend
+    const res = await fetch(`https://my-vacation-backend.onrender.com/api/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      credentials: "include",
+    });
 
-        const [rows] = await db.execute(
-            'SELECT * FROM users WHERE userid = ? AND password = ?',
-            [username, password]
-        );
+    // Get response body
+    const data = await res.json();
 
-        if (rows.length === 1) {
-            const sessionToken = Math.random().toString(36).substring(2);
-
-            const response = NextResponse.json({ success: true });
-            response.headers.set(
-                'Set-Cookie',
-                serialize('session_token', sessionToken, {
-                    httpOnly: true,
-                    secure: true,
-                    path: '/',
-                    maxAge: 60 * 60,
-                })
-            );
-
-            return response;
-        }
-
-        return NextResponse.json({ success: false }, { status: 401 });
-    } catch (error) {
-        console.error('Login error:', error);
-        return NextResponse.json({ success: false }, { status: 500 });
+    // Forward cookies + response back to Next.js client
+    const response = NextResponse.json(data, { status: res.status });
+    const setCookie = res.headers.get("set-cookie");
+    if (setCookie) {
+      response.headers.set("set-cookie", setCookie);
     }
+
+    return response;
+  } catch (error) {
+    console.error("Login error:", error);
+    return NextResponse.json({ success: false }, { status: 500 });
+  }
 }
