@@ -1,15 +1,15 @@
-import { NextResponse } from "next/server";
+// import { NextResponse } from "next/server";
 
-export function middleware(request) {
-  const token = request.cookies.get("token")?.value;
+// export function middleware(request) {
+//   const token = request.cookies.get("token")?.value;
 
-  if (!token) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
+//   if (!token) {
+//     return NextResponse.redirect(new URL("/login", request.url));
+//   }
 
-  return NextResponse.next();
-}
+//   return NextResponse.next();
+// }
 
-export const config = {
-  matcher: ["/admin/:path*"], // protect admin routes
-};
+// export const config = {
+//   matcher: ["/admin/:path*"], // protect admin routes
+// };
