@@ -9,24 +9,34 @@ export default function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    async function handleLogin(e) {
-        e.preventDefault();
+   async function handleLogin(e) {
+    e.preventDefault();
 
+    try {
         const res = await fetch("https://my-vacation-backend.onrender.com/api/login", {
             method: "POST",
             body: JSON.stringify({ username, password }),
             headers: {
                 "Content-Type": "application/json",
             },
-            credentials: "include", 
         });
 
-        if (res.ok) {
-            router.push("/admin"); 
+        const data = await res.json();
+
+        if (res.ok && data.token) {
+            // Store JWT in sessionStorage
+            sessionStorage.setItem("token", data.token);
+
+            // Redirect to admin dashboard
+            router.push("/admin");
         } else {
-            alert("Login failed");
+            alert(data.error || "Login failed");
         }
+    } catch (err) {
+        console.error("Login error:", err);
+        alert("An error occurred. Please try again.");
     }
+}
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-white">
