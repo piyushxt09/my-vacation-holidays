@@ -1,4 +1,5 @@
-// pages/admin/index.js (React component)
+'use client'; 
+
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 
