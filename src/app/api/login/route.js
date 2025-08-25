@@ -21,6 +21,7 @@ export async function POST(req) {
                 'Set-Cookie',
                 serialize('session_token', sessionToken, {
                     httpOnly: true,
+                    secure: true,
                     path: '/',
                     maxAge: 60 * 60,
                 })
