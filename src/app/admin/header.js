@@ -5,9 +5,12 @@ import { useRouter } from 'next/navigation';
 export default function AdminHeader() {
     const router = useRouter();
 
-    async function handleLogout() {
-        await fetch('/api/logout', { method: 'GET' });
-        router.push('/login');
+    function handleLogout() {
+        // 🔑 Remove JWT from sessionStorage
+        sessionStorage.removeItem("token");
+
+        // Redirect to login
+        router.push("/login");
     }
 
     return (
