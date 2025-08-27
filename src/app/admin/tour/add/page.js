@@ -8,6 +8,8 @@ import LexicalEditor from '../../../../components/LexicalEditor';
 
 
 export default function EditTourPage() {
+
+    
     const [form, setForm] = useState({
         package_name: '',
         tour_duration: '',
@@ -87,7 +89,7 @@ export default function EditTourPage() {
         }
 
         try {
-            const res = await fetch('/api/add-tour', {
+            const res = await fetch('http://localhost:5000/api/add-tour', {
                 method: 'POST',
                 body: formData,
             });

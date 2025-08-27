@@ -17,7 +17,7 @@ export default function EditTourPage() {
     useEffect(() => {
         const fetchTour = async () => {
             try {
-                const res = await fetch(`/api/tour-packages/${id}`);
+                const res = await fetch(`http://localhost:5000/api/tour-packages/${id}`);
                 const data = await res.json();
                 setTour(data.tour);
                 setItinerary(data.itinerary || []);
@@ -66,24 +66,27 @@ export default function EditTourPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         try {
             const formData = new FormData();
             for (const key in tour) {
                 formData.append(key, tour[key]);
             }
-
             if (imageFile) {
                 formData.append('image', imageFile);
             }
 
-            formData.append('itinerary', JSON.stringify(itinerary));
+            // Properly serialize the itinerary data
+            const serializedItinerary = itinerary.map(day => ({
+                title: day.title,
+                description: day.description
+            }));
 
-            const res = await fetch(`/api/tour-packages/${id}`, {
+            formData.append('itinerary', JSON.stringify(serializedItinerary));
+
+            const res = await fetch(`http://localhost:5000/api/tour-packages/${id}`, {
                 method: 'PUT',
                 body: formData,
             });
-
             if (res.ok) {
                 alert('Tour updated successfully!');
                 router.push('/admin/tour');
@@ -134,7 +137,7 @@ export default function EditTourPage() {
                             <input type="text" name="tour_destination" value={tour.tour_destination || ''} onChange={handleChange} className="w-full border px-4 py-2 rounded" />
                         </div>
 
-                       
+
 
                         {/* Indian / International / Fixed Departure */}
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -205,7 +208,7 @@ export default function EditTourPage() {
                         {/* Image Upload */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Current Image</label>
-                            {tour.image && <img src={`/galleryimg/${tour.image}`} alt="Current" className="w-40 h-auto border rounded mb-2" />}
+                            {tour.image && <img src={`${tour.image}`} alt="Current" className="w-40 h-auto border rounded mb-2" />}
                             <input type="file" name="image" onChange={handleImageChange} />
                         </div>
 

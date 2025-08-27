@@ -1,5 +1,4 @@
 'use client';
-
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import AdminSidebar from '../../../sidebar';
@@ -10,21 +9,36 @@ export default function EditTourPage() {
     const router = useRouter();
     const [tour, setTour] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchTour = async () => {
             try {
-                const res = await fetch(`/api/tour-packages/${id}`);
+                console.log('Fetching tour with ID:', id);
+                const res = await fetch(`http://localhost:5000/api/tour-packages-seo/${id}`);
+                
+                if (!res.ok) {
+                    const errorData = await res.json();
+                    throw new Error(errorData.error || `HTTP error! status: ${res.status}`);
+                }
+                
                 const data = await res.json();
+                console.log('Tour data received:', data);
                 setTour(data.tour || data); // Fallback for old format
             } catch (error) {
                 console.error('Failed to fetch tour:', error);
+                setError(error.message);
             } finally {
                 setLoading(false);
             }
         };
-
-        fetchTour();
+        
+        if (id) {
+            fetchTour();
+        } else {
+            setError('No tour ID provided');
+            setLoading(false);
+        }
     }, [id]);
 
     const handleChange = (e) => {
@@ -37,9 +51,9 @@ export default function EditTourPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         try {
-            const res = await fetch(`/api/tour-packages/${id}/seo`, {
+            console.log('Submitting SEO data for tour ID:', id);
+            const res = await fetch(`http://localhost:5000/api/tour-packages-seo/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -50,22 +64,24 @@ export default function EditTourPage() {
                     seo_keyword: tour.seo_keyword || '',
                 }),
             });
-
-            if (res.ok) {
-                alert('SEO data updated successfully!');
-                router.push('/admin/tour');
-            } else {
-                const errorText = await res.text();
-                console.error('Update failed:', errorText);
-                alert('Failed to update SEO data');
+            
+            if (!res.ok) {
+                const errorData = await res.json();
+                throw new Error(errorData.error || `HTTP error! status: ${res.status}`);
             }
+            
+            const result = await res.json();
+            console.log('SEO update result:', result);
+            alert('SEO data updated successfully!');
+            router.push('/admin/tour');
         } catch (error) {
             console.error('Error submitting form:', error);
-            alert('An error occurred.');
+            alert(`Error: ${error.message}`);
         }
     };
 
     if (loading) return <p className="p-6">Loading...</p>;
+    if (error) return <p className="p-6 text-red-500">Error: {error}</p>;
     if (!tour) return <p className="p-6">Tour not found</p>;
 
     return (
@@ -75,7 +91,6 @@ export default function EditTourPage() {
                 <AdminHeader />
                 <main className="p-6">
                     <h2 className="text-2xl font-semibold text-gray-800 mb-4">Edit SEO Details</h2>
-
                     <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6 space-y-4">
                         {/* SEO Title */}
                         <div>
@@ -88,7 +103,6 @@ export default function EditTourPage() {
                                 className="w-full border px-4 py-2 rounded"
                             />
                         </div>
-
                         {/* SEO Description */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">SEO Description</label>
@@ -100,7 +114,6 @@ export default function EditTourPage() {
                                 rows={3}
                             />
                         </div>
-
                         {/* SEO Keywords */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">SEO Keywords</label>
@@ -112,7 +125,6 @@ export default function EditTourPage() {
                                 className="w-full border px-4 py-2 rounded"
                             />
                         </div>
-
                         <button
                             type="submit"
                             className="bg-primary hover:bg-blue-700 text-white px-6 py-2 rounded shadow"

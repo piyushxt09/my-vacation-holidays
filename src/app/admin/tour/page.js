@@ -12,7 +12,7 @@ export default function Tour() {
     useEffect(() => {
         const fetchTours = async () => {
             try {
-                const res = await fetch('/api/tours');
+                const res = await fetch('http://localhost:5000/api/alltour');
                 const data = await res.json();
 
                 if (Array.isArray(data)) {
@@ -36,12 +36,13 @@ export default function Tour() {
         if (!confirmDelete) return;
 
         try {
-            const res = await fetch(`/api/tour-packages/${id}`, {
+            const res = await fetch(`http://localhost:5000/api/delete-tour/${id}`, {
                 method: 'DELETE',
             });
 
             if (res.ok) {
-                setTours((prev) => prev.filter((tour) => tour.id !== id));
+                alert('Tour Deleted Successfully');
+                window.location.reload(); // ✅ reloads page after success
             } else {
                 console.error('Delete failed:', await res.text());
                 alert('Failed to delete tour package.');
@@ -51,6 +52,7 @@ export default function Tour() {
             alert('Error deleting tour package.');
         }
     };
+
 
 
 
@@ -94,25 +96,25 @@ export default function Tour() {
                                         <tr key={tour.id} className={index % 2 === 0 ? '' : 'bg-gray-50'}>
                                             <td className="px-4 py-3">{index + 1}</td>
                                             <td className="px-4 py-3">{tour.package_name}</td>
-                                            <td className="px-4 py-3">{tour.theme_name}</td>
+                                            <td className="px-4 py-3">{tour.theme}</td>
                                             <td className="px-4 py-3">{tour.tour_destination}</td>
                                             <td className="px-4 py-3">{tour.tour_price}</td>
                                             <td className="px-4 py-3">{tour.tour_duration}</td>
                                             <td className="px-4 py-3 space-y-2">
                                                 <a
-                                                    href={`/admin/tour/edit/${tour.id}`}
+                                                    href={`/admin/tour/edit/${tour._id}`}
                                                     className="flex items-center gap-2 bg-primary hover:bg-blue-700 text-white px-3 py-1 rounded w-full text-xs"
                                                 >
                                                     <FaEdit /> Edit
                                                 </a>
                                                 <a
-                                                    href={`/admin/tour/seo/${tour.id}`}
+                                                    href={`/admin/tour/seo/${tour._id}`}
                                                     className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded w-full text-xs"
                                                 >
                                                     <FaSearch /> Edit SEO
                                                 </a>
                                                 <button
-                                                    onClick={() => handleDelete(tour.id)}
+                                                    onClick={() => handleDelete(tour._id)}
                                                     className="flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded w-full text-xs"
                                                 >
                                                     <FaTrash /> Delete
