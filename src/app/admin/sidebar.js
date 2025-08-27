@@ -57,6 +57,35 @@ export default function AdminSidebar() {
                         </div>
                     )}
                 </div>
+                <div>
+                    <button
+                        onClick={() => setShowTourDropdown(!showTourDropdown)}
+                        className="w-full flex items-center justify-between py-2 px-4 rounded hover:bg-indigo-700"
+                    >
+                        <span className="flex items-center gap-2">
+                            <FaSuitcaseRolling />
+                            Testimonials
+                        </span>
+                        {showTourDropdown ? <FaChevronUp /> : <FaChevronDown />}
+                    </button>
+
+                    {showTourDropdown && (
+                        <div className="ml-6 mt-1 space-y-1">
+                            <a
+                                href="/admin/testimonial"
+                                className="block px-2 py-1 rounded hover:bg-indigo-600"
+                            >
+                                All Testimonials
+                            </a>
+                            <a
+                                href="/admin/testimonial/add"
+                                className="block px-2 py-1 rounded hover:bg-indigo-600"
+                            >
+                                Add Testimonial
+                            </a>
+                        </div>
+                    )}
+                </div>
             </nav>
         </aside>
     );
