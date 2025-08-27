@@ -89,7 +89,7 @@ export default function EditTourPage() {
         }
 
         try {
-            const res = await fetch('http://localhost:5000/api/add-tour', {
+            const res = await fetch('https://my-vacation-backend.onrender.com/api/add-tour', {
                 method: 'POST',
                 body: formData,
             });

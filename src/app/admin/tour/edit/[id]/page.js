@@ -17,7 +17,7 @@ export default function EditTourPage() {
     useEffect(() => {
         const fetchTour = async () => {
             try {
-                const res = await fetch(`http://localhost:5000/api/tour-packages/${id}`);
+                const res = await fetch(`https://my-vacation-backend.onrender.com/api/tour-packages/${id}`);
                 const data = await res.json();
                 setTour(data.tour);
                 setItinerary(data.itinerary || []);
@@ -83,7 +83,7 @@ export default function EditTourPage() {
 
             formData.append('itinerary', JSON.stringify(serializedItinerary));
 
-            const res = await fetch(`http://localhost:5000/api/tour-packages/${id}`, {
+            const res = await fetch(`https://my-vacation-backend.onrender.com/api/tour-packages/${id}`, {
                 method: 'PUT',
                 body: formData,
             });

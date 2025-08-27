@@ -15,7 +15,7 @@ export default function EditTourPage() {
         const fetchTour = async () => {
             try {
                 console.log('Fetching tour with ID:', id);
-                const res = await fetch(`http://localhost:5000/api/tour-packages-seo/${id}`);
+                const res = await fetch(`https://my-vacation-backend.onrender.com/api/tour-packages-seo/${id}`);
                 
                 if (!res.ok) {
                     const errorData = await res.json();
@@ -53,7 +53,7 @@ export default function EditTourPage() {
         e.preventDefault();
         try {
             console.log('Submitting SEO data for tour ID:', id);
-            const res = await fetch(`http://localhost:5000/api/tour-packages-seo/${id}`, {
+            const res = await fetch(`https://my-vacation-backend.onrender.com/api/tour-packages-seo/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

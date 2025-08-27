@@ -12,7 +12,7 @@ export default function Tour() {
     useEffect(() => {
         const fetchTours = async () => {
             try {
-                const res = await fetch('http://localhost:5000/api/alltour');
+                const res = await fetch('https://my-vacation-backend.onrender.com/api/alltour');
                 const data = await res.json();
 
                 if (Array.isArray(data)) {
@@ -36,7 +36,7 @@ export default function Tour() {
         if (!confirmDelete) return;
 
         try {
-            const res = await fetch(`http://localhost:5000/api/delete-tour/${id}`, {
+            const res = await fetch(`https://my-vacation-backend.onrender.com/api/delete-tour/${id}`, {
                 method: 'DELETE',
             });
 
